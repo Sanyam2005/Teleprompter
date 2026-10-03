@@ -1,0 +1,30 @@
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import { colors } from '@/theme/colors';
+
+export default function RootLayout() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.background }}>
+      <SafeAreaProvider>
+        <StatusBar style="light" />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: colors.background },
+            animation: 'slide_from_right',
+          }}
+        >
+          <Stack.Screen name="index" />
+          <Stack.Screen name="editor" options={{ animation: 'slide_from_bottom' }} />
+          <Stack.Screen
+            name="teleprompter"
+            options={{ animation: 'fade', gestureEnabled: false }}
+          />
+        </Stack>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
+  );
+}

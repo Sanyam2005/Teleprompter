@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Teleprompter · Scan to open in Expo Go</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(1200px 800px at 50% -10%, #16161c 0%, #0a0a0c 60%);
+        font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+        color: #f5f5f7;
+        padding: 24px;
+      }
+      .card {
+        width: 100%;
+        max-width: 460px;
+        background: #141418;
+        border: 1px solid #2a2a33;
+        border-radius: 22px;
+        padding: 28px;
+        text-align: center;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+      }
+      .kicker { color: #4f8cff; font-size: 12px; font-weight: 700; letter-spacing: 2px; }
+      h1 { font-size: 24px; margin: 6px 0 2px; }
+      p.sub { color: #a1a1aa; font-size: 14px; margin: 0 0 22px; }
+      .qr-wrap {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 296px;
+        min-height: 296px;
+      }
+      #qr img, #qr canvas { display: block; width: 260px; height: 260px; }
+      .url {
+        margin-top: 22px;
+        font-family: ui-monospace, "SF Mono", Consolas, monospace;
+        font-size: 15px;
+        color: #f5f5f7;
+        background: #1c1c22;
+        border: 1px solid #2a2a33;
+        border-radius: 12px;
+        padding: 12px 14px;
+        word-break: break-all;
+      }
+      ol { text-align: left; color: #c9c9d1; font-size: 14px; line-height: 1.7; margin: 22px 0 0; padding-left: 20px; }
+      .note { margin-top: 16px; font-size: 12.5px; color: #6b6b73; }
+      b { color: #f5f5f7; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="kicker">TELEPROMPTER</div>
+      <h1>Scan to open in Expo Go</h1>
+      <p class="sub">Point your iPhone camera at the code</p>
+
+      <div class="qr-wrap"><div id="qr"></div></div>
+
+      <div class="url" id="urlText">exp://172.20.4.48:8081</div>
+
+      <ol>
+        <li>Put your iPhone on the <b>same Wi-Fi</b> as this PC.</li>
+        <li>Open the <b>Camera</b> app and aim at the QR code.</li>
+        <li>Tap the banner to open in <b>Expo Go</b>.</li>
+      </ol>
+      <div class="note">If nothing happens, open Expo Go → "Enter URL manually" → type the address above.</div>
+    </div>
+
+    <script>
+      var EXP_URL = "exp://172.20.4.48:8081";
+      document.getElementById("urlText").textContent = EXP_URL;
+
+      function renderFallback() {
+        var img = new Image();
+        img.alt = "QR code";
+        img.width = 260;
+        img.height = 260;
+        img.src =
+          "https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=0&data=" +
+          encodeURIComponent(EXP_URL);
+        var host = document.getElementById("qr");
+        host.innerHTML = "";
+        host.appendChild(img);
+      }
+
+      var s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js";
+      s.onload = function () {
+        try {
+          new QRCode(document.getElementById("qr"), {
+            text: EXP_URL,
+            width: 260,
+            height: 260,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.M,
+          });
+        } catch (e) {
+          renderFallback();
+        }
+      };
+      s.onerror = renderFallback;
+      document.head.appendChild(s);
+    </script>
+  </body>
+</html>
